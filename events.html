@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050a14">
+  <title>Events — Mkuu Amani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050810;
+      --text: #e8f4ff;
+      --muted: #7a9ab8;
+      --line: rgba(0, 200, 255, .18);
+      --neon: #00d4ff;
+      --neon-glow: rgba(0, 212, 255, .45);
+      --heading: "Orbitron", sans-serif;
+      --body: "Rajdhani", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--body);
+      font-weight: 500;
+      line-height: 1.55;
+      background: #050810;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 180, 255, .18), transparent 50%),
+        radial-gradient(ellipse 40% 40% at 100% 80%, rgba(0, 100, 200, .12), transparent),
+        linear-gradient(rgba(0, 212, 255, .03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, .03) 1px, transparent 1px);
+      background-size: auto, auto, 48px 48px, 48px 48px;
+      background-attachment: fixed;
+    }
+    .shell { width: min(820px, calc(100% - 48px)); margin: 0 auto; }
+    header {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      font-family: var(--heading);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--neon);
+      text-shadow: 0 0 12px var(--neon-glow);
+      text-decoration: none;
+    }
+    .back {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .back:hover { color: var(--neon); }
+    main { padding: 48px 0 80px; }
+    h1 {
+      font-family: var(--heading);
+      font-size: clamp(28px, 4vw, 40px);
+      letter-spacing: .06em;
+      margin: 0 0 8px;
+      text-shadow: 0 0 14px var(--neon-glow);
+    }
+    .intro { color: var(--muted); margin: 0 0 28px; max-width: 640px; }
+    .status { color: var(--neon); font-size: 13px; letter-spacing: .1em; margin-bottom: 16px; min-height: 1.2em; }
+    form { display: flex; flex-direction: column; gap: 14px; }
+    label { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--neon); }
+    input, select, textarea {
+      background: rgba(5, 12, 24, 0.85);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      padding: 12px 14px;
+      outline: none;
+      width: 100%;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--neon);
+      box-shadow: 0 0 10px var(--neon-glow);
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .submit-btn {
+      align-self: flex-start;
+      font-family: var(--heading);
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--neon);
+      border: 1px solid var(--neon);
+      padding: 12px 22px;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
+      margin-top: 8px;
+    }
+    .submit-btn:hover { background: rgba(0, 212, 255, 0.15); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .note { color: var(--muted); font-size: 13px; margin-top: 20px; }
+    @media (max-width: 600px) {
+      .shell { width: min(100% - 32px, 100%); }
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="index.html">Mkuu Amani</a>
+      <a class="back" href="index.html">← Back to Gallery</a>
+    </header>
+    <main>
+      <h1>Events & Invitations</h1>
+      <p class="intro">Invite me to document an event, or simply notify me about something important coming up.</p>
+      <div class="status" id="status"></div>
+
+      <form id="eventForm">
+        <div>
+          <label for="type">Type</label>
+          <select id="type" required>
+            <option value="Invite me">Invite me</option>
+            <option value="Notify me">Notify me</option>
+          </select>
+        </div>
+        <div>
+          <label for="name">Your name</label>
+          <input type="text" id="name" required maxlength="80" placeholder="Your name">
+        </div>
+        <div>
+          <label for="contact">Contact (email or phone)</label>
+          <input type="text" id="contact" required maxlength="120" placeholder="How I can reach you">
+        </div>
+        <div>
+          <label for="eventName">Event name</label>
+          <input type="text" id="eventName" required maxlength="140" placeholder="Name of the event">
+        </div>
+        <div class="row">
+          <div>
+            <label for="date">Date</label>
+            <input type="date" id="date" required>
+          </div>
+          <div>
+            <label for="time">Time (optional)</label>
+            <input type="time" id="time">
+          </div>
+        </div>
+        <div>
+          <label for="location">Location or link</label>
+          <input type="text" id="location" maxlength="200" placeholder="Venue, address, or online link">
+        </div>
+        <div>
+          <label for="details">Details</label>
+          <textarea id="details" required maxlength="1200" placeholder="Why it matters, what you’d like me to cover, etc."></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+      </form>
+      <p class="note">Invitations marked “Invite me” are added to a dedicated calendar. All submissions are recorded and I am notified.</p>
+    </main>
+  </div>
+
+  <script>
+    // =============================================
+    // PASTE YOUR EVENTS APPS SCRIPT WEB APP URL HERE
+    // =============================================
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7gD5653Bed9W-Cg72r2F7SPP5rU7jED0rUIimAJ1qooD1q88zFmJpWTpOYxIUPGmhAg/exec";
+
+    const form = document.getElementById("eventForm");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function setStatus(msg) {
+      statusEl.textContent = msg || "";
+    }
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      if (SCRIPT_URL.includes("YOUR_EVENTS_DEPLOYMENT_ID")) {
+        alert("Please set the Events Apps Script URL first.");
+        return;
+      }
+      submitBtn.disabled = true;
+      setStatus("Sending…");
+
+      const payload = {
+        type: document.getElementById("type").value,
+        name: document.getElementById("name").value.trim(),
+        contact: document.getElementById("contact").value.trim(),
+        eventName: document.getElementById("eventName").value.trim(),
+        date: document.getElementById("date").value,
+        time: document.getElementById("time").value,
+        location: document.getElementById("location").value.trim(),
+        details: document.getElementById("details").value.trim()
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        form.reset();
+        setStatus("Submitted. Thank you.");
+      } catch (err) {
+        setStatus("Could not send. Please try again.");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
