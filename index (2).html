@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="A monochrome photography gallery.">
+  <title>MONOCHROME — Photography Gallery</title>
+  <style>
+    :root {
+      --bg: #101010;
+      --panel: #171717;
+      --text: #f2f0eb;
+      --muted: #929292;
+      --line: rgba(255,255,255,.13);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Arial, Helvetica, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .shell { width: min(1440px, calc(100% - 64px)); margin: 0 auto; }
+    header {
+      min-height: 88px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      gap: 20px;
+    }
+    .brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .25em;
+      text-decoration: none;
+    }
+    .top-note {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+    .intro {
+      padding: clamp(66px, 10vw, 142px) 0 66px;
+      max-width: 850px;
+    }
+    .eyebrow {
+      color: #aaa;
+      font-size: 10px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      margin: 0 0 22px;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(58px, 10vw, 132px);
+      letter-spacing: -.065em;
+      line-height: .86;
+      margin: 0;
+    }
+    .intro-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 30px;
+      margin-top: 36px;
+    }
+    .intro-copy {
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 390px;
+      margin: 0;
+    }
+    .count {
+      color: #aaa;
+      font-size: 10px;
+      letter-spacing: .18em;
+      white-space: nowrap;
+    }
+    .gallery-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--line);
+      padding: 18px 0;
+      margin-bottom: 8px;
+    }
+    .gallery-heading span {
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 28px 18px;
+      padding-bottom: 100px;
+    }
+    .photo {
+      grid-column: span 4;
+      margin: 0;
+      min-width: 0;
+      cursor: zoom-in;
+    }
+    .photo:nth-child(1), .photo:nth-child(5) { grid-column: span 7; }
+    .photo:nth-child(2), .photo:nth-child(6) { grid-column: span 5; }
+    .photo:nth-child(3) { grid-column: span 5; }
+    .photo:nth-child(4) { grid-column: span 7; }
+    .image-wrap {
+      position: relative;
+      overflow: hidden;
+      background: #242424;
+      aspect-ratio: 4 / 3;
+    }
+    .photo:nth-child(1) .image-wrap,
+    .photo:nth-child(4) .image-wrap { aspect-ratio: 16 / 10; }
+    .photo:nth-child(2) .image-wrap,
+    .photo:nth-child(5) .image-wrap { aspect-ratio: 5 / 6; }
+    .photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(1);
+      transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease;
+      opacity: .88;
+    }
+    .photo:hover img { transform: scale(1.035); opacity: 1; }
+    .photo figcaption {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding-top: 12px;
+      color: #ddd;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .photo figcaption span:last-child { color: #777; }
+    .empty-hint {
+      color: #777;
+      font-size: 12px;
+      line-height: 1.7;
+      padding: 30px 0;
+      display: none;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 0 34px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: #777;
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 5vh 5vw;
+      background: rgba(0,0,0,.96);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox figure { margin: 0; max-width: 100%; max-height: 100%; text-align: center; }
+    .lightbox img {
+      display: block;
+      max-width: 90vw;
+      max-height: 82vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      filter: grayscale(1);
+    }
+    .lightbox figcaption {
+      color: #aaa;
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      padding-top: 16px;
+    }
+    .close {
+      position: absolute;
+      top: 24px;
+      right: 30px;
+      border: 0;
+      background: transparent;
+      color: white;
+      font-size: 30px;
+      font-weight: 200;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 1px solid rgba(255,255,255,.3);
+      background: rgba(0,0,0,.3);
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .prev { left: 22px; }
+    .next { right: 22px; }
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 36px, 600px); }
+      header { min-height: 70px; }
+      .top-note { font-size: 8px; text-align: right; }
+      .intro { padding: 84px 0 52px; }
+      .intro-bottom { align-items: start; flex-direction: column; gap: 18px; }
+      .gallery { gap: 24px 12px; }
+      .photo, .photo:nth-child(n) { grid-column: span 6; }
+      .photo:nth-child(1), .photo:nth-child(4) { grid-column: span 12; }
+      .photo:nth-child(2) .image-wrap,
+      .photo:nth-child(5) .image-wrap { aspect-ratio: 4 / 5; }
+      .photo figcaption { font-size: 9px; }
+      footer { font-size: 8px; }
+      .lightbox { padding: 5vh 12px; }
+      .prev { left: 8px; }
+      .next { right: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="#">M / G</a>
+      <div class="top-note">An online photography collection · All images monochrome</div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <p class="eyebrow">A study in light, form &amp; feeling</p>
+        <h1>MONO<br>CHROME.</h1>
+        <div class="intro-bottom">
+          <p class="intro-copy">Colour removed. Character remains. A collection of moments, textures and places seen in shades of grey.</p>
+          <div class="count" id="photoCount">06 PHOTOGRAPHS</div>
+        </div>
+      </section>
+
+      <section aria-label="Photography gallery">
+        <div class="gallery-heading">
+          <span>Selected photographs</span>
+          <span>01 — 06</span>
+        </div>
+        <div class="gallery" id="gallery"></div>
+        <p class="empty-hint" id="emptyHint">No photographs found. Check the image paths in the gallery list near the bottom of this file.</p>
+      </section>
+    </main>
+
+    <footer>
+      <span>MONOCHROME — Photography</span>
+      <span>Black &amp; white, by design</span>
+    </footer>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="Expanded photograph">
+    <button class="close" id="close" aria-label="Close">×</button>
+    <button class="lightbox-nav prev" id="prev" aria-label="Previous photograph">‹</button>
+    <figure>
+      <img id="lightboxImage" src="" alt="">
+      <figcaption id="lightboxCaption"></figcaption>
+    </figure>
+    <button class="lightbox-nav next" id="next" aria-label="Next photograph">›</button>
+  </div>
+
+  <script>
+    /*
+      TO ADD YOUR OWN PHOTOGRAPHS:
+      1. Create a folder named "images" beside this index.html file.
+      2. Put your photographs inside it.
+      3. Replace the sample entries below with your filenames.
+      Example: { title: "Match Day", place: "Walsall", src: "images/match-day.jpg" }
+    */
+    const photographs = [
+      {
+        title: "Open country",
+        place: "Landscape",
+        src: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=85"
+      },
+      {
+        title: "Quiet geometry",
+        place: "Architecture",
+        src: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1200&q=85"
+      },
+      {
+        title: "Into the light",
+        place: "Nature",
+        src: "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1400&q=85"
+      },
+      {
+        title: "The long way home",
+        place: "Coast",
+        src: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1600&q=85"
+      },
+      {
+        title: "Open horizon",
+        place: "Outdoors",
+        src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85"
+      },
+      {
+        title: "Stillness",
+        place: "Woodland",
+        src: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1400&q=85"
+      }
+    ];
+
+    const gallery = document.getElementById("gallery");
+    const count = document.getElementById("photoCount");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+    const emptyHint = document.getElementById("emptyHint");
+    let currentIndex = 0;
+    let visiblePhotos = [];
+
+    function renderGallery() {
+      gallery.innerHTML = "";
+      visiblePhotos = photographs.filter(photo => photo && photo.src);
+      count.textContent = `${String(visiblePhotos.length).padStart(2, "0")} PHOTOGRAPHS`;
+      emptyHint.style.display = visiblePhotos.length ? "none" : "block";
+
+      visiblePhotos.forEach((photo, index) => {
+        const figure = document.createElement("figure");
+        figure.className = "photo";
+        figure.innerHTML = `
+          <div class="image-wrap">
+            <img src="${photo.src}" alt="${escapeHtml(photo.title || "Photograph")}" loading="lazy">
+          </div>
+          <figcaption>
+            <span>${escapeHtml(photo.title || "Untitled")}</span>
+            <span>${escapeHtml(photo.place || "")}</span>
+          </figcaption>`;
+        figure.addEventListener("click", () => openLightbox(index));
+        const img = figure.querySelector("img");
+        img.addEventListener("error", () => {
+          figure.querySelector(".image-wrap").style.background = "#292929";
+          img.style.display = "none";
+          figure.querySelector(".image-wrap").setAttribute("aria-label", "Image could not be loaded");
+        });
+        gallery.appendChild(figure);
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[char]));
+    }
+
+    function openLightbox(index) {
+      currentIndex = index;
+      showCurrentPhoto();
+      lightbox.classList.add("open");
+      document.body.style.overflow = "hidden";
+      document.getElementById("close").focus();
+    }
+    function showCurrentPhoto() {
+      const photo = visiblePhotos[currentIndex];
+      if (!photo) return;
+      lightboxImage.src = photo.src;
+      lightboxImage.alt = photo.title || "Photograph";
+      lightboxCaption.textContent = `${photo.title || "Untitled"}${photo.place ? " — " + photo.place : ""}`;
+    }
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+    function movePhoto(direction) {
+      currentIndex = (currentIndex + direction + visiblePhotos.length) % visiblePhotos.length;
+      showCurrentPhoto();
+    }
+
+    document.getElementById("close").addEventListener("click", closeLightbox);
+    document.getElementById("prev").addEventListener("click", () => movePhoto(-1));
+    document.getElementById("next").addEventListener("click", () => movePhoto(1));
+    lightbox.addEventListener("click", event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", event => {
+      if (!lightbox.classList.contains("open")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") movePhoto(-1);
+      if (event.key === "ArrowRight") movePhoto(1);
+    });
+
+    renderGallery();
+  </script>
+</body>
+</html>
