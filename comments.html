@@ -323,11 +323,19 @@
       submitBtn.disabled = true;
       setStatus("Posting…");
       try {
+        let ip = "";
+        try {
+          const ipRes = await fetch("https://api.ipify.org?format=json");
+          const ipData = await ipRes.json();
+          ip = ipData.ip || "";
+        } catch (ignore) {}
+
         const payload = {
           name: nameInput.value.trim(),
           comment: textInput.value.trim(),
           photo: selectedSrc,
-          photoTitle: selectedTitle
+          photoTitle: selectedTitle,
+          ip: ip
         };
         await fetch(SCRIPT_URL, {
           method: "POST",
