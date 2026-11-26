@@ -3,32 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111111">
-  <meta name="description" content="A monochrome photography gallery by Mkuu Amani.">
-  <title>Mkuu Amani — Photography Gallery</title>
+  <meta name="theme-color" content="#050a14">
+  <meta name="description" content="Sci-fi neon monochrome documentary photography by Mkuu Amani.">
+  <title>Mkuu Amani — Neon Documentary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #101010;
-      --panel: #171717;
-      --text: #f2f0eb;
-      --muted: #929292;
-      --line: rgba(255,255,255,.13);
-      --serif: Georgia, "Times New Roman", serif;
-      --sans: Arial, Helvetica, sans-serif;
+      --bg: #050810;
+      --panel: #0a1220;
+      --text: #e8f4ff;
+      --muted: #7a9ab8;
+      --line: rgba(0, 200, 255, .18);
+      --neon: #00d4ff;
+      --neon-glow: rgba(0, 212, 255, .45);
+      --heading: "Orbitron", sans-serif;
+      --body: "Rajdhani", sans-serif;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      background: var(--bg);
       color: var(--text);
-      font-family: var(--sans);
+      font-family: var(--body);
+      font-weight: 500;
       -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+      background: #050810;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 180, 255, .18), transparent 50%),
+        radial-gradient(ellipse 40% 40% at 100% 80%, rgba(0, 100, 200, .12), transparent),
+        radial-gradient(ellipse 30% 30% at 0% 70%, rgba(0, 140, 220, .1), transparent),
+        linear-gradient(rgba(0, 212, 255, .03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, .03) 1px, transparent 1px);
+      background-size: auto, auto, auto, 48px 48px, 48px 48px;
+      background-attachment: fixed;
+      position: relative;
     }
-    a { color: inherit; }
-    .shell { width: min(1440px, calc(100% - 64px)); margin: 0 auto; }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 180, 255, .015) 2px, rgba(0, 180, 255, .015) 4px);
+      z-index: 0;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 20% 30%, transparent 0%, rgba(5, 8, 16, .4) 70%);
+      z-index: 0;
+    }
+    .shell { position: relative; z-index: 1; width: min(1280px, calc(100% - 48px)); margin: 0 auto; }
+
     header {
-      min-height: 88px;
+      min-height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -36,313 +69,313 @@
       gap: 20px;
     }
     .brand {
+      font-family: var(--heading);
       font-size: 13px;
       font-weight: 700;
-      letter-spacing: .25em;
-      text-decoration: none;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--neon);
+      text-shadow: 0 0 12px var(--neon-glow);
     }
     .top-note {
       color: var(--muted);
-      font-size: 10px;
-      letter-spacing: .2em;
+      font-size: 11px;
+      letter-spacing: .24em;
       text-transform: uppercase;
+      font-weight: 600;
     }
+
     .intro {
-      padding: clamp(66px, 10vw, 142px) 0 66px;
-      max-width: 850px;
+      padding: clamp(56px, 9vw, 120px) 0 48px;
+    }
+    .artist-block {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+    .portrait-wrap {
+      position: relative;
+    }
+    .portrait-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: grayscale(1) contrast(1.08) brightness(1.05);
+      border: 1px solid var(--neon);
+      box-shadow: 0 0 28px var(--neon-glow), 0 0 60px rgba(0, 180, 255, .15);
+    }
+    .portrait-caption {
+      margin-top: 12px;
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--neon);
+      font-weight: 600;
     }
     .eyebrow {
-      color: #aaa;
-      font-size: 10px;
-      letter-spacing: .28em;
+      color: var(--neon);
+      font-family: var(--heading);
+      font-size: 11px;
+      letter-spacing: .38em;
       text-transform: uppercase;
-      margin: 0 0 22px;
+      margin: 0 0 16px;
+      text-shadow: 0 0 10px var(--neon-glow);
     }
     h1 {
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: clamp(58px, 10vw, 132px);
-      letter-spacing: -.065em;
-      line-height: .86;
-      margin: 0;
+      font-family: var(--heading);
+      font-weight: 700;
+      font-size: clamp(36px, 5.8vw, 72px);
+      letter-spacing: .05em;
+      line-height: .95;
+      margin: 0 0 20px;
+      color: #ffffff;
+      text-shadow: 0 0 18px var(--neon-glow);
     }
-    .intro-bottom {
+    .bio {
+      color: #c8dcee;
+      font-size: 16.5px;
+      line-height: 1.7;
+      max-width: 620px;
+      margin: 0;
+      font-weight: 500;
+    }
+    .bio p { margin: 0 0 1em; }
+    .bio p:last-child { margin-bottom: 0; }
+
+    .series-header {
+      margin-top: 64px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+    .series-title {
+      font-family: var(--heading);
+      font-size: clamp(22px, 3.4vw, 36px);
+      font-weight: 600;
+      letter-spacing: .07em;
+      margin: 0 0 8px;
+      color: #ffffff;
+      text-shadow: 0 0 14px var(--neon-glow);
+    }
+    .series-meta {
       display: flex;
       justify-content: space-between;
-      align-items: end;
-      gap: 30px;
-      margin-top: 36px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-weight: 600;
     }
-    .intro-copy {
-      color: #aaa;
-      font-size: 14px;
-      line-height: 1.7;
-      max-width: 390px;
-      margin: 0;
-    }
-    .count {
-      color: #aaa;
-      font-size: 10px;
-      letter-spacing: .18em;
-      white-space: nowrap;
-    }
+
     .gallery-heading {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid var(--line);
-      padding: 18px 0;
-      margin-bottom: 8px;
+      padding: 22px 0 12px;
     }
     .gallery-heading span {
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: .2em;
       text-transform: uppercase;
       color: #aaa;
     }
+
     .gallery {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 28px 18px;
-      padding-bottom: 100px;
+      column-count: 3;
+      column-gap: 18px;
+      padding-bottom: 80px;
     }
     .photo {
-      grid-column: span 4;
-      margin: 0;
-      min-width: 0;
+      display: inline-block;
+      width: 100%;
+      margin: 0 0 22px;
+      break-inside: avoid;
       cursor: zoom-in;
     }
-    .photo:nth-child(1), .photo:nth-child(5) { grid-column: span 7; }
-    .photo:nth-child(2), .photo:nth-child(6) { grid-column: span 5; }
-    .photo:nth-child(3) { grid-column: span 5; }
-    .photo:nth-child(4) { grid-column: span 7; }
     .image-wrap {
       position: relative;
       overflow: hidden;
-      background: #242424;
-      aspect-ratio: 4 / 3;
+      background: #0a1220;
+      border: 1px solid rgba(0, 212, 255, .12);
     }
-    .photo:nth-child(1) .image-wrap,
-    .photo:nth-child(4) .image-wrap { aspect-ratio: 16 / 10; }
-    .photo:nth-child(2) .image-wrap,
-    .photo:nth-child(5) .image-wrap { aspect-ratio: 5 / 6; }
     .photo img {
       display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(1);
-      transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease;
-      opacity: .88;
+      height: auto;
+      filter: grayscale(1) contrast(1.05);
+      transition: transform .7s cubic-bezier(.2,.7,.2,1), opacity .4s ease, filter .4s ease;
+      opacity: .9;
     }
-    .photo:hover img { transform: scale(1.035); opacity: 1; }
+    .photo:hover img {
+      transform: scale(1.03);
+      opacity: 1;
+      filter: grayscale(1) contrast(1.1) brightness(1.05);
+    }
+    .photo:hover .image-wrap {
+      border-color: var(--neon);
+      box-shadow: 0 0 16px var(--neon-glow);
+    }
     .photo figcaption {
       display: flex;
       justify-content: space-between;
-      gap: 14px;
-      padding-top: 12px;
-      color: #ddd;
-      font-size: 11px;
+      gap: 12px;
+      padding-top: 10px;
+      color: #d0e6f5;
+      font-size: 12px;
       letter-spacing: .08em;
       text-transform: uppercase;
+      font-weight: 600;
     }
-    .photo figcaption span:last-child { color: #777; }
+    .photo figcaption span:last-child { color: var(--muted); }
+
     .empty-hint {
-      color: #777;
-      font-size: 12px;
-      line-height: 1.7;
-      padding: 30px 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 24px 0;
       display: none;
     }
+
     footer {
       border-top: 1px solid var(--line);
-      padding: 24px 0 34px;
+      padding: 28px 0 40px;
       display: flex;
       justify-content: space-between;
       gap: 20px;
-      color: #777;
-      font-size: 10px;
-      letter-spacing: .16em;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .18em;
       text-transform: uppercase;
+      font-weight: 600;
     }
+
     .lightbox {
       position: fixed;
       inset: 0;
-      z-index: 10;
+      z-index: 100;
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 5vh 5vw;
-      background: rgba(0,0,0,.96);
+      padding: 4vh 4vw;
+      background: rgba(0,0,0,.97);
     }
     .lightbox.open { display: flex; }
     .lightbox figure { margin: 0; max-width: 100%; max-height: 100%; text-align: center; }
     .lightbox img {
       display: block;
-      max-width: 90vw;
-      max-height: 82vh;
+      max-width: 92vw;
+      max-height: 84vh;
       width: auto;
       height: auto;
       object-fit: contain;
       filter: grayscale(1);
     }
     .lightbox figcaption {
-      color: #aaa;
-      font-size: 10px;
+      color: var(--neon);
+      font-size: 12px;
       letter-spacing: .2em;
       text-transform: uppercase;
-      padding-top: 16px;
+      padding-top: 14px;
+      font-weight: 600;
+      text-shadow: 0 0 8px var(--neon-glow);
     }
     .close {
       position: absolute;
-      top: 24px;
-      right: 30px;
+      top: 20px;
+      right: 24px;
       border: 0;
       background: transparent;
-      color: white;
-      font-size: 30px;
+      color: var(--neon);
+      font-size: 32px;
       font-weight: 200;
       cursor: pointer;
-      padding: 8px;
+      padding: 6px;
+      line-height: 1;
+      text-shadow: 0 0 10px var(--neon-glow);
     }
     .lightbox-nav {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      border: 1px solid rgba(255,255,255,.3);
-      background: rgba(0,0,0,.3);
-      color: white;
-      width: 44px;
-      height: 44px;
+      border: 1px solid var(--neon);
+      background: rgba(5, 8, 16, .6);
+      color: var(--neon);
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 20px;
+      font-size: 22px;
+      transition: background .2s, box-shadow .2s;
+      box-shadow: 0 0 12px var(--neon-glow);
     }
-    .prev { left: 22px; }
-    .next { right: 22px; }
-    @media (max-width: 760px) {
-      .shell { width: min(100% - 36px, 600px); }
-      header { min-height: 70px; }
-      .top-note { font-size: 8px; text-align: right; }
-      .intro { padding: 84px 0 52px; }
-      .intro-bottom { align-items: start; flex-direction: column; gap: 18px; }
-      .gallery { gap: 24px 12px; }
-      .photo, .photo:nth-child(n) { grid-column: span 6; }
-      .photo:nth-child(1), .photo:nth-child(4) { grid-column: span 12; }
-      .photo:nth-child(2) .image-wrap,
-      .photo:nth-child(5) .image-wrap { aspect-ratio: 4 / 5; }
-      .photo figcaption { font-size: 9px; }
-      footer { font-size: 8px; }
-      .lightbox { padding: 5vh 12px; }
-      .prev { left: 8px; }
-      .next { right: 8px; }
+    .lightbox-nav:hover { background: rgba(0, 212, 255, .15); box-shadow: 0 0 20px var(--neon-glow); }
+    .prev { left: 18px; }
+    .next { right: 18px; }
+
+    @media (max-width: 900px) {
+      .artist-block { grid-template-columns: 1fr; gap: 32px; }
+      .portrait-wrap { max-width: 320px; }
+      .gallery { column-count: 2; column-gap: 14px; }
+    }
+    @media (max-width: 600px) {
+      .shell { width: min(100% - 32px, 100%); }
+      header { min-height: 60px; }
+      .top-note { font-size: 9px; }
+      .intro { padding: 40px 0 32px; }
+      .gallery { column-count: 1; }
+      .photo { margin-bottom: 16px; }
+      .lightbox { padding: 5vh 10px; }
+      .prev { left: 6px; }
+      .next { right: 6px; }
+      footer { flex-direction: column; gap: 8px; font-size: 9px; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
-    
-/* =================================
-   TRUE MASONRY PHOTO GALLERY
-   ================================= */
-
-.gallery {
-  display: block;
-  column-count: 3;
-  column-gap: 20px;
-  padding-bottom: 100px;
-}
-
-.photo {
-  display: inline-block;
-  width: 100%;
-  margin: 0 0 24px;
-  break-inside: avoid;
-  cursor: zoom-in;
-}
-
-/* Remove the old alternating grid sizes */
-.photo:nth-child(n) {
-  grid-column: auto;
-}
-
-/* Preserve original photograph proportions */
-.photo:nth-child(n) .image-wrap {
-  aspect-ratio: auto;
-  background: #242424;
-}
-
-.photo img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: initial;
-  filter: grayscale(1);
-  transition: transform .8s ease, opacity .5s ease;
-  opacity: .9;
-}
-
-.photo:hover img {
-  transform: scale(1.025);
-  opacity: 1;
-}
-
-/* Tablet */
-@media (max-width: 1000px) {
-  .gallery {
-    column-count: 2;
-    column-gap: 16px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-  .gallery {
-    column-count: 2;
-    column-gap: 12px;
-  }
-
-  .photo {
-    margin-bottom: 16px;
-  }
-
-  .photo figcaption {
-    font-size: 9px;
-    flex-wrap: wrap;
-  }
-}
-
   </style>
 </head>
 <body>
   <div class="shell">
     <header>
-      <a class="brand" href="#">Copyright Mkuu Amani</a>
-      <div class="top-note">An online photography collection </div>
+      <a class="brand" href="#">Mkuu Amani</a>
+      <div class="top-note">Documentary Photography · Walsall</div>
     </header>
 
     <main>
       <section class="intro">
-        <p class="eyebrow">Mkuu Amani</p>
-        <h1>MARCUS GARVEY CENTRE<br>ANTI-CLOSURE PROTEST.</h1>
-        <div class="intro-bottom">
-          <p class="intro-copy">A collection of moments, emotions and actions pictured in shades of grey.</p>
-          <div class="count" id="photoCount">06 PHOTOGRAPHS</div>
+        <div class="artist-block">
+          <div class="portrait-wrap">
+            <img src="mkuu-amani-portrait.jpg" alt="Mkuu Amani, documentary photographer and poet">
+            <div class="portrait-caption">Mkuu Amani · Walsall</div>
+          </div>
+          <div>
+            <p class="eyebrow">Photographer · Videographer · Writer</p>
+            <h1>Mkuu Amani</h1>
+            <div class="bio">
+              <p>Mkuu Amani is a UK-based documentary photographer, videographer, and writer whose work chronicles social justice, community advocacy, and the lived experiences of African and African-Caribbean communities across the West Midlands.</p>
+              <p>Operating from Walsall, Amani uses his lens to capture the raw energy of grassroots activism, public rallies, and cultural milestones—from regional marches to intimate portraits of local changemakers. Alongside his visual storytelling, he is a respected spoken-word artist and community journalist who served as the Walsall Poet Laureate in 2014.</p>
+              <p>Through his photography, video production, and written journals, Amani preserves vital local history and amplifies underrepresented voices across Britain.</p>
+            </div>
+          </div>
         </div>
-      </section>
 
-      <section aria-label="Photography gallery">
-        <div class="gallery-heading">
-          <span>Selected photographs</span>
-          <span>01 — 06</span>
+        <div class="series-header">
+          <h2 class="series-title">Marcus Garvey Centre<br>Anti-Closure Protest</h2>
+          <div class="series-meta">
+            <span>Selected photographs</span>
+            <span id="photoCount">—</span>
+          </div>
         </div>
+
         <div class="gallery" id="gallery"></div>
-        <p class="empty-hint" id="emptyHint">No photographs found. Check the image paths in the gallery list near the bottom of this file.</p>
+        <p class="empty-hint" id="emptyHint">No photographs found. Add image paths to the photographs array in the script.</p>
       </section>
     </main>
 
     <footer>
-      <span>MONOCHROME — Photography</span>
-      <span>Black &amp; white, by design</span>
+      <span>Neon Monochrome · Lens Archive</span>
+      <span>© Mkuu Amani</span>
     </footer>
   </div>
 
@@ -357,67 +390,60 @@
   </div>
 
   <script>
-    /*
-      TO ADD YOUR OWN PHOTOGRAPHS:
-      1. Create a folder named "images" beside this index.html file.
-      2. Put your photographs inside it.
-      3. Replace the sample entries below with your filenames.
-      Example: { title: "Match Day", place: "Walsall", src: "images/match-day.jpg" }
-    */
     const photographs = [
-  { title: "Photograph 01", src: "images/230576372913326.avif" },
-  { title: "Photograph 02", src: "images/230576412913322.avif" },
-  { title: "Photograph 03", src: "images/230576422913321.avif" },
-  { title: "Photograph 04", src: "images/230579942912969.avif" },
-  { title: "Photograph 05", src: "images/230579962912967.avif" },
-  { title: "Photograph 06", src: "images/230580209579609.avif" },
-  { title: "Photograph 07", src: "images/230585149579115.avif" },
-  { title: "Photograph 08", src: "images/230585189579111.avif" },
-  { title: "Photograph 09", src: "images/230585216245775.avif" },
-  { title: "Photograph 10", src: "images/230585266245770.avif" },
-  { title: "Photograph 11", src: "images/230585306245766.avif" },
-  { title: "Photograph 12", src: "images/230585359579094.jpg" },
-  { title: "Photograph 13", src: "images/230585386245758.avif" },
-  { title: "Photograph 14", src: "images/230585426245754.avif" },
-  { title: "Photograph 15", src: "images/230585466245750.avif" },
-  { title: "Photograph 16", src: "images/230585482912415.avif" },
-  { title: "Photograph 17", src: "images/230585489579081.avif" },
-  { title: "Photograph 18", src: "images/230585502912413.avif" },
-  { title: "Photograph 19", src: "images/230585532912410.avif" },
-  { title: "Photograph 20", src: "images/230585552912408.avif" },
-  { title: "Photograph 21", src: "images/230585642912399.jpg" },
-  { title: "Photograph 22", src: "images/230585682912395.avif" },
-  { title: "Photograph 23", src: "images/230585706245726.avif" },
-  { title: "Photograph 24", src: "images/230585772912386.avif" },
-  { title: "Photograph 25", src: "images/230585802912383.avif" },
-  { title: "Photograph 26", src: "images/230585839579046.jpg" },
-  { title: "Photograph 27", src: "images/230585862912377.avif" },
-  { title: "Photograph 28", src: "images/230585892912374.avif" },
-  { title: "Photograph 29", src: "images/230585909579039.avif" },
-  { title: "Photograph 30", src: "images/230585922912371.avif" },
-  { title: "Photograph 31", src: "images/230585946245702.avif" },
-  { title: "Photograph 32", src: "images/230586002912363.avif" },
-  { title: "Photograph 33", src: "images/230586069579023.avif" },
-  { title: "Photograph 34", src: "images/230586096245687.avif" },
-  { title: "Photograph 35", src: "images/230586102912353.avif" },
-  { title: "Photograph 36", src: "images/230586106245686.avif" },
-  { title: "Photograph 37", src: "images/230586202912343.avif" },
-  { title: "Photograph 38", src: "images/230586229579007.avif" },
-  { title: "Photograph 39", src: "images/230586256245671.avif" },
-  { title: "Photograph 40", src: "images/230586266245670.avif" },
-  { title: "Photograph 41", src: "images/230586316245666.avif" },
-  { title: "Photograph 42", src: "images/230586356245661.avif" },
-  { title: "Photograph 43", src: "images/230586376245659.avif" },
-  { title: "Photograph 44", src: "images/230586382912325.avif" },
-  { title: "Photograph 45", src: "images/230586396245657.avif" },
-  { title: "Photograph 46", src: "images/230586462912317.avif" },
-  { title: "Photograph 47", src: "images/230586496245647.avif" },
-  { title: "Photograph 48", src: "images/230586516245645.avif" },
-  { title: "Photograph 49", src: "images/230586562912307.avif" },
-  { title: "Photograph 50", src: "images/230586592912304.avif" },
-  { title: "Photograph 51", src: "images/230586616245635.avif" },
-  { title: "Photograph 52", src: "images/230586666245630.avif" }
-];
+      { title: "Photograph 01", src: "images/230576372913326.avif" },
+      { title: "Photograph 02", src: "images/230576412913322.avif" },
+      { title: "Photograph 03", src: "images/230576422913321.avif" },
+      { title: "Photograph 04", src: "images/230579942912969.avif" },
+      { title: "Photograph 05", src: "images/230579962912967.avif" },
+      { title: "Photograph 06", src: "images/230580209579609.avif" },
+      { title: "Photograph 07", src: "images/230585149579115.avif" },
+      { title: "Photograph 08", src: "images/230585189579111.avif" },
+      { title: "Photograph 09", src: "images/230585216245775.avif" },
+      { title: "Photograph 10", src: "images/230585266245770.avif" },
+      { title: "Photograph 11", src: "images/230585306245766.avif" },
+      { title: "Photograph 12", src: "images/230585359579094.jpg" },
+      { title: "Photograph 13", src: "images/230585386245758.avif" },
+      { title: "Photograph 14", src: "images/230585426245754.avif" },
+      { title: "Photograph 15", src: "images/230585466245750.avif" },
+      { title: "Photograph 16", src: "images/230585482912415.avif" },
+      { title: "Photograph 17", src: "images/230585489579081.avif" },
+      { title: "Photograph 18", src: "images/230585502912413.avif" },
+      { title: "Photograph 19", src: "images/230585532912410.avif" },
+      { title: "Photograph 20", src: "images/230585552912408.avif" },
+      { title: "Photograph 21", src: "images/230585642912399.jpg" },
+      { title: "Photograph 22", src: "images/230585682912395.avif" },
+      { title: "Photograph 23", src: "images/230585706245726.avif" },
+      { title: "Photograph 24", src: "images/230585772912386.avif" },
+      { title: "Photograph 25", src: "images/230585802912383.avif" },
+      { title: "Photograph 26", src: "images/230585839579046.jpg" },
+      { title: "Photograph 27", src: "images/230585862912377.avif" },
+      { title: "Photograph 28", src: "images/230585892912374.avif" },
+      { title: "Photograph 29", src: "images/230585909579039.avif" },
+      { title: "Photograph 30", src: "images/230585922912371.avif" },
+      { title: "Photograph 31", src: "images/230585946245702.avif" },
+      { title: "Photograph 32", src: "images/230586002912363.avif" },
+      { title: "Photograph 33", src: "images/230586069579023.avif" },
+      { title: "Photograph 34", src: "images/230586096245687.avif" },
+      { title: "Photograph 35", src: "images/230586102912353.avif" },
+      { title: "Photograph 36", src: "images/230586106245686.avif" },
+      { title: "Photograph 37", src: "images/230586202912343.avif" },
+      { title: "Photograph 38", src: "images/230586229579007.avif" },
+      { title: "Photograph 39", src: "images/230586256245671.avif" },
+      { title: "Photograph 40", src: "images/230586266245670.avif" },
+      { title: "Photograph 41", src: "images/230586316245666.avif" },
+      { title: "Photograph 42", src: "images/230586356245661.avif" },
+      { title: "Photograph 43", src: "images/230586376245659.avif" },
+      { title: "Photograph 44", src: "images/230586382912325.avif" },
+      { title: "Photograph 45", src: "images/230586396245657.avif" },
+      { title: "Photograph 46", src: "images/230586462912317.avif" },
+      { title: "Photograph 47", src: "images/230586496245647.avif" },
+      { title: "Photograph 48", src: "images/230586516245645.avif" },
+      { title: "Photograph 49", src: "images/230586562912307.avif" },
+      { title: "Photograph 50", src: "images/230586592912304.avif" },
+      { title: "Photograph 51", src: "images/230586616245635.avif" },
+      { title: "Photograph 52", src: "images/230586666245630.avif" }
+    ];
 
     const gallery = document.getElementById("gallery");
     const count = document.getElementById("photoCount");
@@ -450,16 +476,19 @@
         img.addEventListener("error", () => {
           figure.querySelector(".image-wrap").style.background = "#292929";
           img.style.display = "none";
-          figure.querySelector(".image-wrap").setAttribute("aria-label", "Image could not be loaded");
         });
         gallery.appendChild(figure);
       });
     }
 
     function escapeHtml(value) {
-      return String(value).replace(/[&<>"']/g, char => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-      }[char]));
+      const amp = String.fromCharCode(38);
+      return String(value)
+        .replace(/&/g, amp + "amp;")
+        .replace(/</g, amp + "lt;")
+        .replace(/>/g, amp + "gt;")
+        .replace(/"/g, amp + "quot;")
+        .replace(/'/g, amp + "#39;");
     }
 
     function openLightbox(index) {
@@ -474,7 +503,7 @@
       if (!photo) return;
       lightboxImage.src = photo.src;
       lightboxImage.alt = photo.title || "Photograph";
-      lightboxCaption.textContent = `${photo.title || "Untitled"}${photo.place ? " — " + photo.place : ""}`;
+      lightboxCaption.textContent = photo.title || "Untitled";
     }
     function closeLightbox() {
       lightbox.classList.remove("open");
@@ -502,3 +531,4 @@
   </script>
 </body>
 </html>
+
