@@ -240,6 +240,77 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
+    
+/* =================================
+   TRUE MASONRY PHOTO GALLERY
+   ================================= */
+
+.gallery {
+  display: block;
+  column-count: 3;
+  column-gap: 20px;
+  padding-bottom: 100px;
+}
+
+.photo {
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 24px;
+  break-inside: avoid;
+  cursor: zoom-in;
+}
+
+/* Remove the old alternating grid sizes */
+.photo:nth-child(n) {
+  grid-column: auto;
+}
+
+/* Preserve original photograph proportions */
+.photo:nth-child(n) .image-wrap {
+  aspect-ratio: auto;
+  background: #242424;
+}
+
+.photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: initial;
+  filter: grayscale(1);
+  transition: transform .8s ease, opacity .5s ease;
+  opacity: .9;
+}
+
+.photo:hover img {
+  transform: scale(1.025);
+  opacity: 1;
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+  .gallery {
+    column-count: 2;
+    column-gap: 16px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .gallery {
+    column-count: 2;
+    column-gap: 12px;
+  }
+
+  .photo {
+    margin-bottom: 16px;
+  }
+
+  .photo figcaption {
+    font-size: 9px;
+    flex-wrap: wrap;
+  }
+}
+
   </style>
 </head>
 <body>
