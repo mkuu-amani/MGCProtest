@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050a14">
+  <title>Comments — Mkuu Amani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050810;
+      --text: #e8f4ff;
+      --muted: #7a9ab8;
+      --line: rgba(0, 200, 255, .18);
+      --neon: #00d4ff;
+      --neon-glow: rgba(0, 212, 255, .45);
+      --heading: "Orbitron", sans-serif;
+      --body: "Rajdhani", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--body);
+      font-weight: 500;
+      line-height: 1.55;
+      background: #050810;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 180, 255, .18), transparent 50%),
+        radial-gradient(ellipse 40% 40% at 100% 80%, rgba(0, 100, 200, .12), transparent),
+        linear-gradient(rgba(0, 212, 255, .03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, .03) 1px, transparent 1px);
+      background-size: auto, auto, 48px 48px, 48px 48px;
+      background-attachment: fixed;
+    }
+    .shell { width: min(1100px, calc(100% - 48px)); margin: 0 auto; position: relative; }
+    header {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      font-family: var(--heading);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--neon);
+      text-shadow: 0 0 12px var(--neon-glow);
+      text-decoration: none;
+    }
+    .back {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .back:hover { color: var(--neon); }
+    main { padding: 48px 0 80px; }
+    h1 {
+      font-family: var(--heading);
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: .06em;
+      margin: 0 0 8px;
+      text-shadow: 0 0 14px var(--neon-glow);
+    }
+    .intro { color: var(--muted); max-width: 640px; margin: 0 0 28px; }
+    .status { color: var(--neon); font-size: 13px; letter-spacing: .1em; margin-bottom: 16px; min-height: 1.2em; }
+    .thumb-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+      max-height: 320px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+    .thumb {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: #0a1220;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); display: block; }
+    .thumb.selected { border-color: var(--neon); box-shadow: 0 0 12px var(--neon-glow); }
+    .comment-form { display: flex; flex-direction: column; gap: 12px; max-width: 640px; margin-bottom: 36px; }
+    .comment-form input, .comment-form textarea {
+      background: rgba(5, 12, 24, 0.85);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      padding: 12px 14px;
+      outline: none;
+    }
+    .comment-form input:focus, .comment-form textarea:focus {
+      border-color: var(--neon);
+      box-shadow: 0 0 10px var(--neon-glow);
+    }
+    .comment-form textarea { min-height: 100px; resize: vertical; }
+    .selected-preview { display: flex; align-items: center; gap: 12px; min-height: 52px; color: var(--muted); font-size: 13px; }
+    .selected-preview img { width: 52px; height: 52px; object-fit: cover; filter: grayscale(1); border: 1px solid var(--neon); }
+    .submit-btn {
+      align-self: flex-start;
+      font-family: var(--heading);
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--neon);
+      border: 1px solid var(--neon);
+      padding: 12px 22px;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
+    }
+    .submit-btn:hover { background: rgba(0, 212, 255, 0.15); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .comments-list { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
+    .comment-card {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      background: rgba(5, 12, 24, 0.7);
+      border: 1px solid var(--line);
+    }
+    .comment-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      filter: grayscale(1);
+      border: 1px solid var(--neon);
+      flex-shrink: 0;
+    }
+    .comment-meta { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--neon); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+    .comment-text { margin: 0; color: #d0e6f5; font-size: 15px; }
+    .no-comments { color: var(--muted); }
+    @media (max-width: 600px) {
+      .shell { width: min(100% - 32px, 100%); }
+      .comment-card { flex-direction: column; }
+      .comment-card img { width: 100%; height: 160px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="index.html">Mkuu Amani</a>
+      <a class="back" href="index.html">← Back to Gallery</a>
+    </header>
+    <main>
+      <h1>Community Comments</h1>
+      <p class="intro">Select a photograph, then leave a note. Comments are stored in a shared Google Sheet so everyone sees the same stream.</p>
+      <div class="status" id="status"></div>
+
+      <div class="thumb-selector" id="thumbSelector"></div>
+
+      <form class="comment-form" id="commentForm">
+        <div class="selected-preview" id="selectedPreview">No photograph selected</div>
+        <input type="text" id="commentName" placeholder="Your name" required maxlength="60">
+        <textarea id="commentText" placeholder="Your comment…" required maxlength="800"></textarea>
+        <button type="submit" class="submit-btn" id="submitBtn">Post Comment</button>
+      </form>
+
+      <div class="comments-list" id="commentsList">
+        <p class="no-comments">Loading comments…</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // =============================================
+    // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+    // =============================================
+    const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
+
+    const photographs = [
+      { title: "Photograph 01", src: "images/230576372913326.avif" },
+      { title: "Photograph 02", src: "images/230576412913322.avif" },
+      { title: "Photograph 03", src: "images/230576422913321.avif" },
+      { title: "Photograph 04", src: "images/230579942912969.avif" },
+      { title: "Photograph 05", src: "images/230579962912967.avif" },
+      { title: "Photograph 06", src: "images/230580209579609.avif" },
+      { title: "Photograph 07", src: "images/230585149579115.avif" },
+      { title: "Photograph 08", src: "images/230585189579111.avif" },
+      { title: "Photograph 09", src: "images/230585216245775.avif" },
+      { title: "Photograph 10", src: "images/230585266245770.avif" },
+      { title: "Photograph 11", src: "images/230585306245766.avif" },
+      { title: "Photograph 12", src: "images/230585359579094.jpg" },
+      { title: "Photograph 13", src: "images/230585386245758.avif" },
+      { title: "Photograph 14", src: "images/230585426245754.avif" },
+      { title: "Photograph 15", src: "images/230585466245750.avif" },
+      { title: "Photograph 16", src: "images/230585482912415.avif" },
+      { title: "Photograph 17", src: "images/230585489579081.avif" },
+      { title: "Photograph 18", src: "images/230585502912413.avif" },
+      { title: "Photograph 19", src: "images/230585532912410.avif" },
+      { title: "Photograph 20", src: "images/230585552912408.avif" },
+      { title: "Photograph 21", src: "images/230585642912399.jpg" },
+      { title: "Photograph 22", src: "images/230585682912395.avif" },
+      { title: "Photograph 23", src: "images/230585706245726.avif" },
+      { title: "Photograph 24", src: "images/230585772912386.avif" },
+      { title: "Photograph 25", src: "images/230585802912383.avif" },
+      { title: "Photograph 26", src: "images/230585839579046.jpg" },
+      { title: "Photograph 27", src: "images/230585862912377.avif" },
+      { title: "Photograph 28", src: "images/230585892912374.avif" },
+      { title: "Photograph 29", src: "images/230585909579039.avif" },
+      { title: "Photograph 30", src: "images/230585922912371.avif" },
+      { title: "Photograph 31", src: "images/230585946245702.avif" },
+      { title: "Photograph 32", src: "images/230586002912363.avif" },
+      { title: "Photograph 33", src: "images/230586069579023.avif" },
+      { title: "Photograph 34", src: "images/230586096245687.avif" },
+      { title: "Photograph 35", src: "images/230586102912353.avif" },
+      { title: "Photograph 36", src: "images/230586106245686.avif" },
+      { title: "Photograph 37", src: "images/230586202912343.avif" },
+      { title: "Photograph 38", src: "images/230586229579007.avif" },
+      { title: "Photograph 39", src: "images/230586256245671.avif" },
+      { title: "Photograph 40", src: "images/230586266245670.avif" },
+      { title: "Photograph 41", src: "images/230586316245666.avif" },
+      { title: "Photograph 42", src: "images/230586356245661.avif" },
+      { title: "Photograph 43", src: "images/230586376245659.avif" },
+      { title: "Photograph 44", src: "images/230586382912325.avif" },
+      { title: "Photograph 45", src: "images/230586396245657.avif" },
+      { title: "Photograph 46", src: "images/230586462912317.avif" },
+      { title: "Photograph 47", src: "images/230586496245647.avif" },
+      { title: "Photograph 48", src: "images/230586516245645.avif" },
+      { title: "Photograph 49", src: "images/230586562912307.avif" },
+      { title: "Photograph 50", src: "images/230586592912304.avif" },
+      { title: "Photograph 51", src: "images/230586616245635.avif" },
+      { title: "Photograph 52", src: "images/230586666245630.avif" }
+    ];
+
+    const thumbSelector = document.getElementById("thumbSelector");
+    const selectedPreview = document.getElementById("selectedPreview");
+    const form = document.getElementById("commentForm");
+    const nameInput = document.getElementById("commentName");
+    const textInput = document.getElementById("commentText");
+    const list = document.getElementById("commentsList");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submitBtn");
+
+    let selectedSrc = null;
+    let selectedTitle = "";
+
+    function escapeHtml(value) {
+      const amp = String.fromCharCode(38);
+      return String(value)
+        .replace(/&/g, amp + "amp;")
+        .replace(/</g, amp + "lt;")
+        .replace(/>/g, amp + "gt;")
+        .replace(/"/g, amp + "quot;")
+        .replace(/'/g, amp + "#39;");
+    }
+
+    function setStatus(msg) {
+      statusEl.textContent = msg || "";
+    }
+
+    function renderThumbs() {
+      thumbSelector.innerHTML = "";
+      photographs.forEach(photo => {
+        const div = document.createElement("div");
+        div.className = "thumb";
+        div.innerHTML = `<img src="${photo.src}" alt="${escapeHtml(photo.title || "")}" loading="lazy">`;
+        div.addEventListener("click", () => {
+          document.querySelectorAll(".thumb").forEach(t => t.classList.remove("selected"));
+          div.classList.add("selected");
+          selectedSrc = photo.src;
+          selectedTitle = photo.title || "Photograph";
+          selectedPreview.innerHTML = `<img src="${photo.src}" alt=""> <span>${escapeHtml(selectedTitle)} selected</span>`;
+        });
+        thumbSelector.appendChild(div);
+      });
+    }
+
+    async function loadComments() {
+      if (SCRIPT_URL.includes("YOUR_DEPLOYMENT_ID")) {
+        list.innerHTML = '<p class="no-comments">Set your Google Apps Script URL in the page source to load live comments.</p>';
+        return;
+      }
+      setStatus("Loading…");
+      try {
+        const res = await fetch(SCRIPT_URL);
+        const data = await res.json();
+        renderComments(Array.isArray(data) ? data : []);
+        setStatus("");
+      } catch (err) {
+        setStatus("Could not load comments.");
+        list.innerHTML = '<p class="no-comments">Unable to reach the sheet right now.</p>';
+      }
+    }
+
+    function renderComments(comments) {
+      if (!comments.length) {
+        list.innerHTML = '<p class="no-comments">No comments yet. Be the first to respond to a photograph.</p>';
+        return;
+      }
+      list.innerHTML = comments.map(c => `
+        <article class="comment-card">
+          <img src="${c.photo || ""}" alt="${escapeHtml(c.photoTitle || "")}">
+          <div class="comment-body">
+            <div class="comment-meta">
+              <span>${escapeHtml(c.name || "Anonymous")}</span>
+              <span>${c.timestamp ? new Date(c.timestamp).toLocaleString() : ""}</span>
+            </div>
+            <p class="comment-text">${escapeHtml(c.comment || "")}</p>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      if (!selectedSrc) {
+        alert("Please select a photograph first.");
+        return;
+      }
+      if (SCRIPT_URL.includes("YOUR_DEPLOYMENT_ID")) {
+        alert("Please set your Google Apps Script URL first.");
+        return;
+      }
+      submitBtn.disabled = true;
+      setStatus("Posting…");
+      try {
+        const payload = {
+          name: nameInput.value.trim(),
+          comment: textInput.value.trim(),
+          photo: selectedSrc,
+          photoTitle: selectedTitle
+        };
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        form.reset();
+        selectedSrc = null;
+        selectedTitle = "";
+        selectedPreview.textContent = "No photograph selected";
+        document.querySelectorAll(".thumb").forEach(t => t.classList.remove("selected"));
+        setStatus("Posted. Refreshing…");
+        setTimeout(loadComments, 1200);
+      } catch (err) {
+        setStatus("Failed to post. Try again.");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    renderThumbs();
+    loadComments();
+  </script>
+</body>
+</html>
